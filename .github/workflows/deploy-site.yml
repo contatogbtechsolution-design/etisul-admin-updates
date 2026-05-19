@@ -1,8 +1,6 @@
 name: Deploy do site
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 concurrency:
@@ -78,4 +76,3 @@ jobs:
             sudo systemctl restart '${SERVICE_NAME:-etisul}'
             sudo systemctl --no-pager --full status '${SERVICE_NAME:-etisul}' | head -n 25
           "
-
