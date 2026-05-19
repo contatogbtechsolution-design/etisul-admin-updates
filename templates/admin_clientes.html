@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Clientes - Etisul Admin</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="admin-app-body">
+<div class="admin-shell">
+    {% include "admin_sidebar.html" %}
+<main class="admin-page">
+    <section class="admin-page-header">
+        <div>
+            <span>Clientes</span>
+            <h1>Clientes cadastrados</h1>
+            <p>Consulta interna de clientes criados pelo site público.</p>
+        </div>
+    </section>
+    <form method="GET" class="busca-form admin-busca">
+        <input type="text" name="busca" placeholder="Buscar por ID, nome, e-mail, telefone, CPF/CNPJ ou cidade" value="{{ busca }}" data-live-search="tr[data-search]">
+        <button type="submit">Buscar</button>
+    </form>
+    <section class="admin-panel">
+        <table>
+            <tr><th>ID</th><th>Nome</th><th>E-mail</th><th>Telefone</th><th>CPF/CNPJ</th><th>Cidade</th><th>Cadastro</th><th>Ações</th></tr>
+            {% for cliente in clientes %}
+            <tr data-search="{{ cliente.id }} {{ cliente.nome }} {{ cliente.email }} {{ cliente.telefone or '' }} {{ cliente.cpf_cnpj or '' }} {{ cliente.endereco or '' }} {{ cliente.cidades or '' }} {{ cliente.criado_em }}">
+                <td>{{ cliente.id }}</td>
+                <td>{{ cliente.nome }}</td>
+                <td>{{ cliente.email }}</td>
+                <td>{{ cliente.telefone }}</td>
+                <td>{{ cliente.cpf_cnpj or "Não informado" }}</td>
+                <td>{{ cliente.cidades or "Não informado" }}</td>
+                <td>{{ cliente.criado_em }}</td>
+                <td><a href="/admin/clientes/{{ cliente.id }}" class="btn-editar">Ver detalhes</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </section>
+</main>
+</section>
+</div>
+<script src="{{ url_for('static', filename='js/admin-search.js') }}"></script>
+</body>
+</html>

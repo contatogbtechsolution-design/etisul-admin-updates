@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Meus Pedidos - Etisul</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon-180.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="navbar">
+    <div class="logo"><img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="Etisul"></div>
+    <nav class="menu-links cliente-menu">
+        <a href="/cliente/login">Minha Conta</a>
+        <a href="/cliente/pedidos">Meus Pedidos</a>
+        <a href="/cliente/logout">Sair</a>
+    </nav>
+</header>
+
+<main class="cliente-dashboard">
+    <section class="cliente-hero">
+        <div>
+            <span>Histórico</span>
+            <h1>Minhas Solicitações</h1>
+            <p>Veja solicitações e orçamentos registrados no site.</p>
+        </div>
+    </section>
+
+    {% if pedidos %}
+        <div class="pedidos-lista">
+            {% for pedido in pedidos %}
+                <article class="pedido-card">
+                    <div class="pedido-card-topo">
+                        <div>
+                            <strong>Pedido #{{ pedido.id }}</strong>
+                            <p>{{ pedido.data }}</p>
+                        </div>
+                    </div>
+
+                    {% for item in pedido.itens %}
+                        <div class="pedido-produto">
+                            {% if item.imagem %}
+                                <img src="{{ url_for('static', filename='uploads/' + item.imagem) }}" alt="{{ item.produto }}">
+                            {% else %}
+                                <div class="carrinho-sem-img">Sem imagem</div>
+                            {% endif %}
+                            <div>
+                                <h3>{{ item.produto }}</h3>
+                                <p>Quantidade: {{ item.quantidade }}</p>
+                                <p>Valor unitário: R$ {{ item.preco_unitario }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    <div class="pedido-acoes">
+                        <strong>Total: R$ {{ pedido.valor_total }}</strong>
+                        <a href="/cliente/pedidos/{{ pedido.id }}" class="btn-inicio">Ver detalhes</a>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <section class="cliente-painel">
+            <h2>Nenhum pedido ainda</h2>
+            <p>Quando você solicitar um orçamento, ele aparecerá aqui.</p>
+            <a href="/produtos" class="btn-inicio">Ver produtos</a>
+        </section>
+    {% endif %}
+</main>
+</body>
+</html>

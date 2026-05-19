@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Etisul Etiquetas</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon-180.png') }}">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<section class="hero-logo">
+    <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="Etisul">
+</section>
+<header class="menu">
+    <div class="logo">
+   
+</div>
+    <nav class="menu-links">
+        <a href="/produtos">Produtos</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#contato">Contato</a>
+        <a href="/carrinho" class="cart-button" aria-label="Carrinho">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 4h2l2.2 9.2a2 2 0 0 0 2 1.5h7.9a2 2 0 0 0 1.9-1.4L21 7H7"></path>
+                <circle cx="10" cy="19" r="1.6"></circle>
+                <circle cx="18" cy="19" r="1.6"></circle>
+            </svg>
+            <strong>Carrinho</strong>
+            <span>{{ total_carrinho }}</span>
+        </a>
+        <a href="/cliente/login" class="login-icon-link" aria-label="Login"><span class="user-icon"></span><span>Login</span></a>
+    </nav>
+</header>
+
+<section class="banner">
+    <h2>Etiquetas personalizadas para sua empresa</h2>
+    <p>Qualidade, rapidez e soluções sob medida.</p>
+
+
+</section>
+
+
+<section id="sobre" class="sobre">
+    <h2>Sobre a Etisul</h2>
+    <p>
+        A Etisul Etiquetas oferece soluções completas em etiquetas para empresas,
+        com qualidade, rapidez e personalização para diversos segmentos.
+    </p>
+    <a href="/sobre-empresa" class="btn-inicio">Conheça mais sobre a empresa</a>
+</section>
+
+<section id="contato" class="contato">
+    <div class="contato-grid">
+        <div class="contato-info">
+            <h2>Contato</h2>
+            <p>WhatsApp: (49) 99941-9541</p>
+            <p>Instagram: @etisuletiquetas</p>
+            <p>Email: contato@etisul.com</p>
+            <p>Atendimento para etiquetas personalizadas, orçamentos e pedidos empresariais.</p>
+        </div>
+
+        <form method="POST" action="/duvidas" class="duvidas-form">
+            <h2>Tire sua dúvida por WhatsApp</h2>
+            <input type="text" name="nome" placeholder="Nome" required>
+            <input type="email" name="email" placeholder="E-mail" required>
+            <input type="text" name="telefone" placeholder="Telefone" required>
+            <textarea name="duvida" placeholder="Escreva sua dúvida aqui" required></textarea>
+            <button type="submit">Envie sua dúvida</button>
+        </form>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 Etisul Etiquetas</p>
+</footer>
+
+<script src="{{ url_for('static', filename='js/scroll-effects.js') }}"></script>
+</body>
+</html>

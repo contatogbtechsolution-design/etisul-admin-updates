@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Opções de recebimento</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="admin-app-body">
+<div class="admin-shell">
+    {% include "admin_sidebar.html" %}
+    <main class="admin-page">
+        <div class="container">
+            <h1>Opções de recebimento</h1>
+            <p>Cadastre as formas que o cliente pode escolher ao fechar a compra pelo site.</p>
+
+            <form method="POST" class="form-produto">
+                <input type="text" name="nome" placeholder="Nome da opção" required>
+                <textarea name="descricao" placeholder="Descrição"></textarea>
+                <select name="ativo">
+                    <option value="1">Ativa</option>
+                    <option value="0">Inativa</option>
+                </select>
+                <button type="submit">Cadastrar opção</button>
+            </form>
+
+            <h2>Opções cadastradas</h2>
+            <table>
+                <tr>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+                {% for opcao in opcoes %}
+                <tr>
+                    <td colspan="4">
+                        <form method="POST" action="/admin/opcoes-recebimento/edit/{{ opcao.id }}" class="form-opcao-recebimento">
+                            <input type="text" name="nome" value="{{ opcao.nome }}" required>
+                            <textarea name="descricao">{{ opcao.descricao or '' }}</textarea>
+                            <select name="ativo">
+                                <option value="1" {% if opcao.ativo %}selected{% endif %}>Ativa</option>
+                                <option value="0" {% if not opcao.ativo %}selected{% endif %}>Inativa</option>
+                            </select>
+                            <button type="submit" class="btn-editar">Salvar</button>
+                            <button type="submit" formaction="/admin/opcoes-recebimento/delete/{{ opcao.id }}" formmethod="POST" class="btn-excluir" onclick="return confirm('Excluir esta opção?');">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </main>
+</div>
+</body>
+</html>

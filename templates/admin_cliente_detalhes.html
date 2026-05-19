@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head><meta charset="UTF-8"><title>Detalhes do cliente</title><link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body class="admin-app-body"><div class="admin-shell">{% include "admin_sidebar.html" %}
+<main class="admin-page">
+<section class="admin-page-header"><div><span>Clientes</span><h1>{{ cliente.nome }}</h1><p>Dados completos do cliente cadastrado.</p></div></section>
+<section class="admin-panel">
+<p><strong>E-mail:</strong> {{ cliente.email }}</p><p><strong>Telefone:</strong> {{ cliente.telefone }}</p>
+<p><strong>CPF/CNPJ:</strong> {{ cliente.cpf_cnpj or "Não informado" }}</p>
+<p><strong>Cidade/Estado:</strong> {{ cliente.cidade or "Não informado" }}/{{ cliente.estado or "Não informado" }}</p>
+<p><strong>CEP:</strong> {{ cliente.cep or "Não informado" }}</p><p><strong>Endereço:</strong> {{ cliente.endereco or "Não informado" }}</p>
+</section><a href="/admin/clientes" class="btn-inicio">Voltar</a>
+</main></section></div></body></html>

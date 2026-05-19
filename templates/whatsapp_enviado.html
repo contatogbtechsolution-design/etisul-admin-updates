@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mensagem para WhatsApp - Etisul</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon-180.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="container mensagem-whatsapp">
+    <div class="whatsapp-card">
+        {% if tipo_confirmacao == "compra" %}
+            <span>Orçamento enviado</span>
+            <h1>Sua compra foi enviada para orçamento</h1>
+        {% elif tipo_confirmacao == "orcamento" %}
+            <span>Orçamento registrado</span>
+            <h1>Solicitação enviada com sucesso</h1>
+        {% else %}
+            <span>{{ 'Mensagem registrada' if sucesso_contato or erro_contato else 'Orçamento registrado' }}</span>
+            <h1>{{ 'Recebemos sua dúvida' if sucesso_contato or erro_contato else 'Sua solicitação foi recebida' }}</h1>
+        {% endif %}
+
+        {% if sucesso_contato %}
+            <p class="mensagem-sucesso">
+                {% if tipo_confirmacao in ["compra", "orcamento"] %}
+                    {{ sucesso_contato }}
+                {% else %}
+                    Sua dúvida foi enviada por e-mail para a Etisul.
+                {% endif %}
+            </p>
+        {% elif erro_contato %}
+            <p class="mensagem-erro">{{ erro_contato }}</p>
+        {% endif %}
+
+        {% if numero_pedido %}
+            <div class="confirmacao-numero">
+                <span>Número do orçamento</span>
+                <strong>#{{ numero_pedido }}</strong>
+            </div>
+        {% endif %}
+
+        {% if whatsapp_link %}
+            <p>O WhatsApp Web será aberto em outra guia com a mensagem pronta. Para concluir, toque em enviar na conversa da Etisul.</p>
+        {% endif %}
+
+        <div class="whatsapp-actions">
+            {% if whatsapp_link %}
+                <a href="{{ whatsapp_link }}" class="btn-whatsapp" target="_blank" rel="noopener">Abrir WhatsApp</a>
+            {% endif %}
+            {% if tipo_confirmacao == "compra" %}
+                <a href="/cliente/pedidos" class="btn-inicio">Ver meus pedidos</a>
+                <a href="/produtos" class="btn-inicio">Continuar comprando</a>
+            {% elif tipo_confirmacao == "orcamento" %}
+                <a href="/produtos" class="btn-inicio">Ver mais produtos</a>
+            {% endif %}
+            <a href="/" class="btn-inicio">Voltar ao início</a>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/scroll-effects.js') }}"></script>
+{% if whatsapp_link %}
+<script>
+    setTimeout(function () {
+        var whatsappWindow = window.open({{ whatsapp_link|tojson }}, "_blank", "noopener");
+        if (whatsappWindow) {
+            whatsappWindow.opener = null;
+        }
+    }, 700);
+</script>
+{% endif %}
+</body>
+</html>

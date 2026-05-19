@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin - Produtos</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon-180.png') }}">
+    <meta name="theme-color" content="#1f2937">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="admin-app-body">
+<div class="admin-shell">
+    {% include "admin_sidebar.html" %}
+<main class="admin-page">
+<div class="container">
+    <div class="admin-app-brand">
+        <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="Etisul" class="admin-installed-logo">
+    </div>
+
+    <h1>Painel de Produtos</h1>
+
+    <a href="/admin" class="btn-inicio">Voltar ao início</a>
+
+    <h2>Cadastrar Produto</h2>
+
+    {% if session.get("cargo") in ["admin", "chefe"] %}
+    <form method="POST" action="/admin/produtos/add" enctype="multipart/form-data" class="form-produto">
+        <input type="text" name="nome" placeholder="Nome" required>
+        <select name="categoria_id" required>
+            <option value="">Sem categoria</option>
+            {% for categoria in categorias %}
+                <option value="{{ categoria.id }}">{{ categoria.nome }}</option>
+            {% endfor %}
+        </select>
+        <textarea name="descricao" placeholder="Descrição do produto" rows="4" required></textarea>
+        <input type="file" name="imagem" accept="image/png,image/jpeg,image/gif,image/webp">
+        <button type="submit">Adicionar</button>
+    </form>
+    {% else %}
+        <p>Seu cargo permite visualizar produtos, mas não cadastrar ou alterar.</p>
+    {% endif %}
+
+    <h2>Lista de Produtos</h2>
+
+    <form method="GET" class="busca-form admin-busca">
+        <input type="text" name="busca" placeholder="Buscar por nome, descrição, categoria, código, preço ou status" value="{{ busca or '' }}" data-live-search="tr[data-search]">
+        <button type="submit">Buscar</button>
+    </form>
+
+    {% if session.get("cargo") in ["admin", "chefe"] and produtos %}
+        <form method="POST" action="/admin/produtos/delete-all" class="form-excluir-todos" onsubmit="return confirm('Tem certeza que deseja excluir todos os produtos do catálogo? Eles sairão da loja, mas pedidos antigos serão preservados.');">
+            <button type="submit" class="btn-excluir">Excluir todos os produtos do catálogo</button>
+        </form>
+    {% endif %}
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Imagem</th>
+            <th>Nome</th>
+            <th>Categoria</th>
+            <th>Descrição</th>
+            <th>Link fixo</th>
+            {% if session.get("cargo") in ["admin", "chefe"] %}
+                <th>Ações</th>
+            {% endif %}
+        </tr>
+
+        {% for p in produtos %}
+        <tr data-search="{{ p.id }} {{ p.nome }} {{ p.descricao or '' }} {{ p.categoria_nome or 'Sem categoria' }} {{ p.preco }} ativo">
+            <td>{{ p.id }}</td>
+            <td>
+                {% if p.imagem %}
+                    <img src="{{ url_for('static', filename='uploads/' + p.imagem) }}" alt="{{ p.nome }}" class="admin-produto-img">
+                {% else %}
+                    <span class="admin-sem-img">Sem imagem</span>
+                {% endif %}
+            </td>
+            <td>{{ p.nome }}</td>
+            <td>{{ p.categoria_nome or "Sem categoria" }}</td>
+            <td>
+                <textarea class="descricao-expandivel" readonly ondblclick="this.classList.toggle('expandida')">{{ p.descricao or "" }}</textarea>
+            </td>
+            <td>
+                <div class="produto-link-admin">
+                    <input type="text" readonly value="{{ request.url_root.rstrip('/') }}/produtos/{{ p.id }}">
+                    <button type="button" data-copy-value="{{ request.url_root.rstrip('/') }}/produtos/{{ p.id }}">Copiar</button>
+                </div>
+            </td>
+            {% if session.get("cargo") in ["admin", "chefe"] %}
+                <td>
+                    <a href="/admin/produtos/edit/{{ p.id }}" class="btn-editar">Editar</a>
+                    <a href="/admin/produtos/delete/{{ p.id }}" class="btn-excluir">Excluir</a>
+                </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+
+    </table>
+
+</div>
+</main>
+</section>
+</div>
+
+<script src="{{ url_for('static', filename='js/scroll-effects.js') }}"></script>
+<script src="{{ url_for('static', filename='js/admin-search.js') }}"></script>
+<script>
+document.querySelectorAll("[data-copy-value]").forEach((button) => {
+    button.addEventListener("click", async () => {
+        await navigator.clipboard.writeText(button.dataset.copyValue);
+        const textoOriginal = button.textContent;
+        button.textContent = "Copiado";
+        window.setTimeout(() => button.textContent = textoOriginal, 1400);
+    });
+});
+</script>
+</body>
+</html>
+

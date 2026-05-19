@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sobre a Empresa - Etisul</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon-180.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<section class="hero-logo">
+    <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="Etisul">
+</section>
+<header class="menu">
+    <div class="logo">
+   
+</div>
+    <nav class="menu-links">
+        <a href="/produtos">Produtos</a>
+        <a href="/#sobre">Sobre</a>
+        <a href="/#contato">Contato</a>
+        <a href="/cliente/login" class="login-icon-link" aria-label="Login"><span class="user-icon"></span><span>Login</span></a>
+        <a href="{{ admin_link }}" class="admin-app-only">Admin</a>
+    </nav>
+</header>
+
+<main class="sobre-empresa-page">
+    <section class="sobre-empresa-hero">
+        <div>
+            <span>30 anos de experiência</span>
+            <h1>Sobre a Empresa</h1>
+            <p>Nossas etiquetas identificam a qualidade e beleza de sua marca.</p>
+        </div>
+    </section>
+
+    <section class="sobre-empresa-grid">
+        <article class="sobre-empresa-card destaque">
+            <h2>Tradição, qualidade e beleza</h2>
+            <p>Já há algum tempo a etiqueta deixou de ser uma questão apenas de identificação. Ela é hoje também um retrato da qualidade de seu produto e um certificado de bom gosto e beleza.</p>
+            <p>A etiqueta evoluiu e sofisticou-se ao longo dos últimos anos e somente quem tem 45 anos de experiência, como nós da ETISUL ETIQUETAS, poderia aliar esta evolução com tradição e experiência.</p>
+        </article>
+
+        <article class="sobre-empresa-card">
+            <h2>Atuação no setor flexográfico</h2>
+            <p>A ETISUL ETIQUETAS é uma empresa nacional que vem atuando no setor flexográfico há 45 anos, produzindo etiquetas e rótulos adesivos ou não, disponíveis em vários tamanhos e formatos para aplicação manual ou automática.</p>
+            <p>Desenvolvemos projetos para atender a todas as necessidades e exigências do setor e comercializamos equipamentos e ribbons destinados ao mercado de automação comercial e industrial.</p>
+        </article>
+
+        <article class="sobre-empresa-card">
+            <h2>Atendimento personalizado</h2>
+            <p>Estamos plenamente capacitados para oferecer o que há de melhor em matéria de etiquetas, além de um serviço de atendimento ao cliente voltado à sua total satisfação.</p>
+            <p>Dispomos de uma equipe de profissionais qualificados, experientes e comprometidos, sempre à disposição para atender e orientar na implantação e aplicação correta dos materiais.</p>
+        </article>
+
+        <article class="sobre-empresa-card">
+            <h2>Matéria-prima e garantia</h2>
+            <p>Nossas etiquetas são fabricadas com a mais alta qualidade. A matéria-prima utilizada provém de fornecedores que possuem certificação ISO e QS, atendendo normas e padrões internacionais.</p>
+            <p>Isso oferece total garantia e segurança aos nossos produtos, mantendo pontualidade, qualidade e respeito pelo cliente como características centrais da empresa.</p>
+        </article>
+
+        <article class="sobre-empresa-card amplo">
+            <h2>Soluções para diferentes aplicações</h2>
+            <p>Nossos produtos são destinados à identificação e rotulagem geral, atendendo a vários processos, requisitos e normas. Quando falamos em etiquetas para identificação ou qualquer outra aplicação, pode parecer algo simples, mas é preciso procurar quem entende e tem experiência no assunto.</p>
+            <p>Os materiais adesivos são compostos de múltiplas camadas, o que chamamos de sanduíche: frontal, adesivo, silicone, protetor ou liner. Essa composição permite um mix variado de produtos para atender diversas aplicações e setores.</p>
+        </article>
+
+        <article class="sobre-empresa-card amplo">
+            <h2>Indicação correta para cada necessidade</h2>
+            <p>O uso correto dos materiais depende de informações associadas a fatores como tipo de impressão, forma de aplicação, superfície onde será aplicado, dimensão do produto ou local, exposição a intempéries, logística, tempo de permanência e outros pontos analisados caso a caso.</p>
+            <p>A ETISUL Etiquetas está apta a atender vários segmentos de mercado, preocupando-se sempre em indicar o produto correto para cada situação, evitando custos desnecessários e oferecendo soluções criativas, inovadoras, preços justos e atendimento personalizado.</p>
+        </article>
+    </section>
+
+    <section class="sobre-empresa-valores">
+        <div>
+            <strong>30 anos</strong>
+            <span>de experiência</span>
+        </div>
+        <div>
+         
+            <strong>Flexografia</strong>
+            <span>etiquetas e rótulos</span>
+        </div>
+        <div>
+            <strong>Sob medida</strong>
+            <span>aplicação manual ou automática</span>
+        </div>
+    </section>
+
+    <div class="sobre-empresa-acoes">
+        <a href="/" class="btn-inicio">Voltar para a página inicial</a>
+        <a href="/produtos" class="btn-inicio">Ver produtos</a>
+    </div>
+</main>
+
+<script src="{{ url_for('static', filename='js/scroll-effects.js') }}"></script>
+</body>
+</html>

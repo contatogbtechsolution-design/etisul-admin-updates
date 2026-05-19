@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Editar Usuário - Etisul</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon-180.png') }}">
+    <meta name="theme-color" content="#1f2937">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="admin-app-body">
+<div class="admin-shell">
+    {% include "admin_sidebar.html" %}
+<main class="admin-page">
+<div class="container">
+    <div class="admin-app-brand">
+        <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="Etisul" class="admin-installed-logo">
+    </div>
+
+    <h1>Editar usuário</h1>
+
+    {% if mensagem %}
+        <p class="mensagem-sucesso">{{ mensagem }}</p>
+    {% endif %}
+
+    {% if erro %}
+        <p class="mensagem-erro">{{ erro }}</p>
+    {% endif %}
+
+    <form method="POST" class="form-produto">
+        <label>
+            Nome
+            <input type="text" name="nome" value="{{ usuario_editado.nome }}" required>
+        </label>
+
+        <label>
+            Usuário
+            <input type="text" name="usuario" value="{{ usuario_editado.usuario }}" required>
+        </label>
+
+        <label>
+            Cargo / permissão
+            <select name="cargo" required>
+                {% for cargo in cargos %}
+                    <option value="{{ cargo }}" {% if usuario_editado.cargo == cargo %}selected{% endif %}>
+                        {% if cargo == "admin" %}Colaborador administrador{% elif cargo == "chefe" %}Chefe{% else %}Funcionário{% endif %}
+                    </option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>
+            Status
+            <select name="status" required>
+                <option value="ativo" {% if usuario_editado.status == "ativo" %}selected{% endif %}>Ativo</option>
+                <option value="inativo" {% if usuario_editado.status == "inativo" %}selected{% endif %}>Inativo</option>
+            </select>
+        </label>
+
+        <label>
+            Nova senha
+            <input type="password" name="senha" placeholder="Deixe em branco para manter a senha atual">
+        </label>
+
+        <button type="submit">Salvar alterações</button>
+    </form>
+
+    <a href="/admin/usuarios" class="btn-inicio">Voltar</a>
+    <a href="/admin" class="btn-inicio">Voltar ao início</a>
+</div>
+</main>
+</section>
+</div>
+
+<script src="{{ url_for('static', filename='js/scroll-effects.js') }}"></script>
+</body>
+</html>

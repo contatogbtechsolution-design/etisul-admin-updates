@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Esqueceu a senha - Etisul</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon-180.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<main class="cliente-auth">
+    <section class="auth-card">
+        <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="Etisul">
+        <h1>Esqueceu a senha?</h1>
+        <p>{{ mensagem }}</p>
+        <a href="{{ whatsapp_link }}" class="btn-whatsapp" target="_blank" rel="noopener">Chamar no WhatsApp</a>
+        <a href="{{ voltar_url }}" class="btn-inicio">Voltar ao login</a>
+    </section>
+</main>
+</body>
+</html>

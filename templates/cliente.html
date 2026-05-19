@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Área do Cliente - Etisul</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon-180.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">
+        <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="Etisul">
+    </div>
+
+    <nav class="menu-links cliente-menu">
+        <a href="/">Início</a>
+        <a href="/produtos">Produtos</a>
+        <a href="/cliente/login" class="login-icon-link" aria-label="Login"><span class="user-icon"></span><span>Login</span></a>
+    </nav>
+</header>
+
+<main class="cliente-dashboard">
+    <section class="cliente-hero">
+        <div>
+            <span>Área do cliente</span>
+            <h1>Orçamentos e atendimento</h1>
+            <p>Consulte produtos e envie uma solicitação para a equipe preparar seu orçamento.</p>
+        </div>
+        <a href="/cliente/login" class="btn-inicio">Ir para conta</a>
+    </section>
+
+    <section class="cliente-grid-conta">
+        <article class="cliente-painel">
+            <h2>Solicite orçamento</h2>
+            <p>Escolha um produto do catálogo e envie quantidade, contato e detalhes da etiqueta desejada.</p>
+            <a href="/produtos" class="btn-continuar">Ver produtos</a>
+        </article>
+
+        <article class="cliente-painel">
+            <h2>Formas de envio</h2>
+            {% for chave, envio in opcoes_envio.items() %}
+                <div class="conta-lista-item">
+                    <strong>{{ envio.nome }}</strong>
+                    <p>Prazo: {{ envio.prazo }}</p>
+                    <p>Valor: R$ {{ "%.2f"|format(envio.valor) }}</p>
+                </div>
+            {% endfor %}
+        </article>
+
+        <article class="cliente-painel">
+            <h2>Veja solicitações</h2>
+            <p>Ao entrar na conta, você pode consultar pedidos e orçamentos registrados.</p>
+            <a href="/cliente/login" class="btn-continuar">Ir para conta</a>
+        </article>
+
+        <article class="cliente-painel">
+            <h2>Atendimento</h2>
+            <p>A equipe da Etisul retorna pelo WhatsApp ou e-mail informado na solicitação.</p>
+            <a href="/" class="btn-inicio">Voltar para página inicial</a>
+        </article>
+    </section>
+</main>
+
+<script src="{{ url_for('static', filename='js/scroll-effects.js') }}"></script>
+</body>
+</html>

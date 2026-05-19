@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Editar Conta - Etisul</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon-180.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<main class="cliente-dashboard">
+    <section class="cliente-painel cliente-form-page">
+        <h1>Editar informações</h1>
+        <form method="POST" class="form-produto">
+            <input type="text" name="nome" value="{{ cliente.nome }}" required>
+            <input type="text" name="telefone" value="{{ cliente.telefone }}" required>
+            <input type="text" name="cpf_cnpj" value="{{ cliente.cpf_cnpj or '' }}" placeholder="CPF/CNPJ" required>
+            <div class="form-duas-colunas">
+                <input type="text" name="cidade" value="{{ cliente.cidade or '' }}" placeholder="Cidade" required>
+                <input type="text" name="estado" value="{{ cliente.estado or '' }}" placeholder="Estado" required>
+            </div>
+            <input type="text" name="cep" value="{{ cliente.cep or '' }}" placeholder="CEP" required>
+            <textarea name="endereco" rows="3">{{ cliente.endereco or "" }}</textarea>
+            <div class="campo-senha">
+                <input type="password" id="cliente-editar-senha" name="senha" placeholder="Nova senha, se quiser alterar">
+                <button type="button" class="btn-olho" data-password-toggle="cliente-editar-senha" aria-label="Mostrar senha">&#128065;</button>
+            </div>
+            <button type="submit">Salvar alterações</button>
+        </form>
+        <a href="/cliente/login" class="btn-inicio">Voltar ao início</a>
+    </section>
+</main>
+<script src="{{ url_for('static', filename='js/senha-toggle.js') }}"></script>
+</body>
+</html>

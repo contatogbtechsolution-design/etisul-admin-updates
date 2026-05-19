@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Orçamentos em andamento - Etisul</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon-180.png') }}">
+    <meta name="theme-color" content="#1f2937">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="admin-app-body">
+<div class="admin-shell">
+    {% include "admin_sidebar.html" %}
+<main class="admin-page">
+<div class="container">
+    <div class="admin-app-brand">
+        <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="Etisul" class="admin-installed-logo">
+    </div>
+
+    <section class="admin-page-header"><div><span>Orçamentos</span><h1>Orçamentos em andamento</h1><p>Solicitações e compras online aguardando fechamento comercial.</p></div></section>
+
+    <form method="GET" class="busca-form admin-busca">
+        <input type="text" name="busca" placeholder="Buscar por pedido, cliente, produto, status, data, pagamento ou entrega" value="{{ busca or '' }}" data-live-search="tr[data-search]">
+        <button type="submit">Buscar</button>
+    </form>
+
+    <table>
+        <tr>
+            <th>Pedido</th>
+            <th>Produto</th>
+            <th>Cliente</th>
+            <th>Telefone</th>
+            <th>Quantidade</th>
+            <th>Status</th>
+            <th>Total</th>
+            <th>Data</th>
+            <th>Ações</th>
+        </tr>
+
+        {% for p in pedidos %}
+        <tr data-search="{{ p.id }} {{ p.produto }} {{ p.nome_cliente }} {{ p.telefone }} {{ p.quantidade }} {{ p.status or '' }} {{ p.valor_total or '' }} {{ p.data }} orçamento retirada entrega a combinar">
+            <td>#{{ p.id }}</td>
+            <td>{{ p.produto }}</td>
+            <td>{{ p.nome_cliente }}</td>
+            <td>{{ p.telefone }}</td>
+            <td>{{ p.quantidade }}</td>
+            <td>{{ p.status or "Sem status" }}</td>
+            <td>R$ {{ p.valor_total or "0.00" }}</td>
+            <td>{{ p.data }}</td>
+            <td><a href="/admin/orcamentos/{{ p.id }}" class="btn-editar">Ver detalhes</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="/admin" class="btn-inicio">Voltar ao início</a>
+</div>
+</main>
+</section>
+</div>
+
+<script src="{{ url_for('static', filename='js/scroll-effects.js') }}"></script>
+<script src="{{ url_for('static', filename='js/admin-search.js') }}"></script>
+</body>
+</html>
+

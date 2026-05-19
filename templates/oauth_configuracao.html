@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login social - Etisul</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon-180.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<main class="cliente-auth">
+    <section class="auth-card auth-card-wide">
+        <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="Etisul">
+        <h1>Login com {{ provider.nome }}</h1>
+        <div class="alerta-estoque">
+            Para ativar o login com {{ provider.nome }}, configure as credenciais OAuth no ambiente do servidor.
+        </div>
+        <p>Variáveis necessárias:</p>
+        <ul class="oauth-env-list">
+            <li>{{ provider.env }}_CLIENT_ID</li>
+            <li>{{ provider.env }}_CLIENT_SECRET</li>
+        </ul>
+        <p>URL de retorno para cadastrar no provedor:</p>
+        <code>{{ request.url_root.rstrip("/") }}/cliente/oauth/{{ provider.env.lower() }}/callback</code>
+        <a href="/cliente/login" class="btn-inicio">Voltar ao login</a>
+    </section>
+</main>
+</body>
+</html>

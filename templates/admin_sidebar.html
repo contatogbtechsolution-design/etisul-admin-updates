@@ -1,0 +1,37 @@
+<aside class="admin-sidebar">
+    <div class="admin-sidebar-brand">
+        <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="Etisul">
+        <strong>Etisul Admin</strong>
+    </div>
+
+    <nav class="admin-sidebar-nav">
+        <a href="/admin"><span>⌂</span> Início</a>
+        {% if session.get("cargo") in ["admin", "chefe"] %}
+            <a href="/admin/produtos"><span>▦</span> Produtos</a>
+            <a href="/admin/categorias"><span>◇</span> Categorias</a>
+        {% endif %}
+        <a href="/admin/pedidos"><span>☰</span> Orçamentos em andamento</a>
+        <a href="/admin/pedidos-encerrados"><span>▣</span> Pedidos encerrados</a>
+        {% if session.get("cargo") == "admin" %}
+            <a href="/admin/relatorios"><span>▣</span> Relatórios</a>
+            <a href="/admin/opcoes-recebimento"><span>▤</span> Opções de recebimento</a>
+            <a href="/admin/clientes"><span>◎</span> Clientes cadastrados</a>
+            <a href="/admin/usuarios"><span>☷</span> Funcionários</a>
+        {% endif %}
+        <a href="/admin/whatsapp"><span>✆</span> WhatsApp orçamentos</a>
+        <a href="/admin/whatsapp-duvidas"><span>?</span> WhatsApp dúvidas</a>
+        <a href="/admin/configuracoes"><span>⚙</span> Configurações</a>
+    </nav>
+</aside>
+
+<section class="admin-content">
+    <header class="admin-topbar">
+        <div>
+            <span>Sistema interno</span>
+            <strong>Etisul Etiquetas</strong>
+        </div>
+        <div class="admin-user-pill">
+            <span>{{ session.get("usuario") }}</span>
+            <small>{% if session.get("usuario") == "admin" %}suporte do sistema{% else %}{{ session.get("cargo") }}{% endif %}</small>
+        </div>
+    </header>

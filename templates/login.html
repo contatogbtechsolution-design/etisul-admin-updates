@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login - Etisul</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon-180.png') }}">
+    <meta name="theme-color" content="#1f2937">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="admin-login-body">
+
+<div class="admin-login-card">
+    <div class="admin-app-brand">
+        <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="Etisul" class="admin-installed-logo">
+    </div>
+
+    <h1>Login administrativo</h1>
+    <p>Acesso exclusivo para equipe interna da Etisul Etiquetas.</p>
+
+    <form method="POST" class="form-produto">
+        <input type="text" name="usuario" placeholder="Usuário" required>
+        <div class="campo-senha">
+            <input type="password" id="admin-login-senha" name="senha" placeholder="Senha" required>
+            <button type="button" class="btn-olho" data-password-toggle="admin-login-senha" aria-label="Mostrar senha">&#128065;</button>
+        </div>
+        <button type="submit">Entrar</button>
+    </form>
+
+    <a href="/esqueci-senha" class="btn-continuar">Esqueceu a senha?</a>
+</div>
+
+<script src="{{ url_for('static', filename='js/scroll-effects.js') }}"></script>
+<script src="{{ url_for('static', filename='js/senha-toggle.js') }}"></script>
+</body>
+</html>

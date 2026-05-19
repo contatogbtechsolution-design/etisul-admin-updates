@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ produto.nome }} - Etisul</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="loja-topo">
+    <a href="/" class="logo loja-logo">
+        <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="Etisul">
+    </a>
+    <a href="/produtos" class="link-topo">Produtos</a>
+    <a href="/carrinho" class="link-topo cart-button" aria-label="Carrinho">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 4h2l2.2 9.2a2 2 0 0 0 2 1.5h7.9a2 2 0 0 0 1.9-1.4L21 7H7"></path>
+            <circle cx="10" cy="19" r="1.6"></circle>
+            <circle cx="18" cy="19" r="1.6"></circle>
+        </svg>
+        <strong>Carrinho</strong>
+        <span>{{ total_carrinho }}</span>
+    </a>
+</header>
+
+<main class="loja-container produto-detalhe-page">
+    <article class="produto-detalhe-card">
+        {% if produto.imagem %}
+            <img src="{{ url_for('static', filename='uploads/' + produto.imagem) }}?v={{ produto.imagem }}" alt="{{ produto.nome }}">
+        {% else %}
+            <div class="sem-imagem">Sem imagem</div>
+        {% endif %}
+        <div>
+            <span class="produto-categoria">{{ produto.categoria_nome or "Sem categoria" }}</span>
+            <h1>{{ produto.nome }}</h1>
+            <p>{{ produto.descricao if produto.descricao else "Etiqueta personalizada para empresas." }}</p>
+            {% if request.args.get("carrinho") == "adicionado" %}
+                <div class="alerta-carrinho alerta-carrinho-toast" role="status" aria-live="polite">
+                    <strong>Produto adicionado ao carrinho.</strong>
+                    <a href="/carrinho">Ver carrinho</a>
+                </div>
+            {% endif %}
+            <form method="POST" action="/carrinho/add/{{ produto.id }}" class="produto-compra-form">
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <input type="number" name="quantidade" min="1" value="1" required>
+                <button type="submit" class="btn-comprar">Adicionar ao carrinho</button>
+            </form>
+            <div class="produto-acoes-compartilhar">
+                <a href="/pedido/{{ produto.id }}" class="btn-inicio">Solicitar orçamento direto</a>
+                <button type="button" class="btn-inicio" data-share-url="{{ request.url }}" data-share-title="{{ produto.nome }}">Compartilhar</button>
+            </div>
+        </div>
+    </article>
+</main>
+<script src="{{ url_for('static', filename='js/product-share.js') }}"></script>
+</body>
+</html>

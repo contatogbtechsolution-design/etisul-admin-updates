@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login do Cliente - Etisul</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon-180.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<main class="cliente-auth">
+    <section class="auth-card">
+        <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="Etisul">
+        <h1>Sign in</h1>
+        {% if mensagem %}<div class="mensagem-sucesso">{{ mensagem }}</div>{% endif %}
+        {% if erro %}<div class="alerta-estoque">{{ erro }}</div>{% endif %}
+        <form method="POST" action="/cliente/login" class="form-produto">
+            <input type="email" id="cliente-login-email" name="email" placeholder="Email" value="{{ email_digitado or '' }}" required>
+            <div class="campo-senha">
+                <input type="password" id="cliente-login-senha" name="senha" placeholder="Senha" required>
+                <button type="button" class="btn-olho" data-password-toggle="cliente-login-senha" aria-label="Mostrar senha">&#128065;</button>
+            </div>
+            <button type="submit">Entrar</button>
+        </form>
+        <a href="/cliente/esqueci-senha?email={{ email_digitado or '' }}" class="btn-continuar" id="link-esqueci-senha">Esqueceu a senha?</a>
+        <p>Ainda não tem cadastro? <a href="/cliente/cadastro">Criar conta</a></p>
+        <a href="/" class="btn-inicio">Voltar ao início</a>
+    </section>
+</main>
+<script>
+    const emailLogin = document.getElementById("cliente-login-email");
+    const linkEsqueciSenha = document.getElementById("link-esqueci-senha");
+
+    if (emailLogin && linkEsqueciSenha) {
+        linkEsqueciSenha.addEventListener("click", function () {
+            const email = emailLogin.value.trim();
+            linkEsqueciSenha.href = "/cliente/esqueci-senha?email=" + encodeURIComponent(email);
+        });
+    }
+</script>
+<script src="{{ url_for('static', filename='js/senha-toggle.js') }}"></script>
+</body>
+</html>

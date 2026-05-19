@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Detalhes do Pedido - Etisul</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon-180.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<main class="cliente-dashboard">
+    <section class="cliente-hero">
+        <div>
+            <span>Pedido #{{ pedido.id }}</span>
+            <h1>Detalhes do pedido</h1>
+        </div>
+        <a href="/cliente/pedidos" class="btn-inicio">Voltar aos pedidos</a>
+    </section>
+
+    <section class="cliente-grid-conta">
+        <article class="cliente-painel">
+            <h2>Dados cadastrados</h2>
+            <p>{{ pedido.rua or "Endereço não informado" }}, {{ pedido.numero or "" }}</p>
+            <p>{{ pedido.cidade or "" }} {{ pedido.estado or "" }}</p>
+        </article>
+        <article class="cliente-painel">
+            <h2>Atendimento</h2>
+            <p>A equipe entrará em contato para confirmar detalhes, prazo e valores do orçamento.</p>
+        </article>
+    </section>
+
+    <section class="pedidos-lista">
+        <article class="pedido-card">
+            {% for item in itens %}
+                <div class="pedido-produto">
+                    {% if item.imagem %}
+                        <img src="{{ url_for('static', filename='uploads/' + item.imagem) }}" alt="{{ item.nome }}">
+                    {% else %}
+                        <div class="carrinho-sem-img">Sem imagem</div>
+                    {% endif %}
+                    <div>
+                        <h3>{{ item.nome }}</h3>
+                        <p>Quantidade: {{ item.quantidade }}</p>
+                        <p>Valor unitário: R$ {{ item.preco_unitario }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+            <strong>Total: R$ {{ pedido.valor_total }}</strong>
+        </article>
+    </section>
+</main>
+</body>
+</html>

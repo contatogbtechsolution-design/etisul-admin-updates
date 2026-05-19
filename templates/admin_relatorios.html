@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Relatórios - Etisul Admin</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="admin-app-body">
+<div class="admin-shell">
+    {% include "admin_sidebar.html" %}
+<main class="admin-page">
+    <section class="admin-page-header">
+        <div>
+            <span>Relatórios</span>
+            <h1>Resumo operacional</h1>
+            <p>Indicadores rápidos para acompanhamento interno.</p>
+        </div>
+    </section>
+    <section class="admin-dashboard-grid">
+        <article><span>Orçamentos encerrados</span><strong>{{ total_orcamentos }}</strong></article>
+        <article><span>Valor lucrado</span><strong>R$ {{ total_lucrado }}</strong></article>
+        <article><span>Valor perdido</span><strong>R$ {{ total_perdido }}</strong></article>
+        <article><span>Clientes</span><strong>{{ total_clientes }}</strong></article>
+    </section>
+    <form method="GET" class="busca-form admin-busca">
+        <select name="mes">
+            <option value="">Todos os meses</option>
+            {% for numero, nome in [('01','Janeiro'),('02','Fevereiro'),('03','Março'),('04','Abril'),('05','Maio'),('06','Junho'),('07','Julho'),('08','Agosto'),('09','Setembro'),('10','Outubro'),('11','Novembro'),('12','Dezembro')] %}
+                <option value="{{ numero }}" {% if mes_filtro == numero %}selected{% endif %}>{{ nome }}</option>
+            {% endfor %}
+        </select>
+        <input type="number" name="ano" placeholder="Ano" value="{{ ano_filtro }}">
+        <button type="submit">Aplicar período</button>
+    </form>
+    <section class="admin-panel relatorios-graficos">
+        <div>
+            <h2>Fechados x cancelados</h2>
+            <div class="grafico-pizza" style="--fechados: {{ (total_fechados / total_orcamentos * 100) if total_orcamentos else 0 }}%"></div>
+            <p>{{ total_fechados }} fechados / {{ total_cancelados }} cancelados</p>
+        </div>
+        <div>
+            <h2>Rendimento por mês</h2>
+            <div class="grafico-linha">
+                {% for mes in meses %}
+                    <article>
+                        <span>{{ mes.mes }}</span>
+                        <i style="--valor: {{ mes.fechado or 0 }}"></i>
+                        <small>R$ {{ mes.fechado or 0 }}</small>
+                    </article>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</main>
+</section>
+</div>
+</body>
+</html>

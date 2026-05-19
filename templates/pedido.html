@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Solicitar Orçamento - Etisul</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon-180.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">
+        <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="Etisul">
+    </div>
+
+    <nav class="menu-links">
+        <a href="/">Início</a>
+        <a href="/produtos">Produtos</a>
+        <a href="/cliente/login" class="login-icon-link" aria-label="Login"><span class="user-icon"></span><span>Login</span></a>
+    </nav>
+</header>
+
+<main class="orcamento-page">
+    <section class="orcamento-intro">
+        <h1>Solicitar Orçamento</h1>
+        <p>Envie seus dados e a quantidade desejada para prepararmos um atendimento mais rápido pelo WhatsApp.</p>
+
+        <div class="orcamento-info">
+            <strong>Atendimento Etisul</strong>
+            <span>WhatsApp: (49) 99941-9541</span>
+            <span>E-mail: contato@etisul.com</span>
+            <span>Av. Getúlio Vargas, 1605 – Centro – Chapecó – SC</span>
+        </div>
+    </section>
+
+    <section class="orcamento-card">
+        <form method="POST" class="form-produto form-orcamento">
+            <div class="form-duas-colunas">
+                <input type="text" name="nome" placeholder="Nome completo" required>
+                <input type="text" name="telefone" placeholder="Telefone / WhatsApp" required>
+            </div>
+
+            <div class="form-duas-colunas">
+                <input type="email" name="email" placeholder="Endereço de e-mail" required>
+                <input type="text" name="empresa" placeholder="Empresa (opcional)">
+            </div>
+
+            <input type="number" name="quantidade" placeholder="Quantidade desejada" min="1" required>
+            <textarea name="observacoes" placeholder="Conte detalhes como medidas, material, acabamento ou prazo desejado"></textarea>
+
+            <div class="orcamento-acoes">
+                <button type="submit">Enviar orçamento</button>
+                <a href="/produtos" class="btn-inicio">Voltar aos produtos</a>
+                <a href="/" class="btn-inicio">Voltar ao início</a>
+            </div>
+        </form>
+    </section>
+</main>
+
+<script src="{{ url_for('static', filename='js/scroll-effects.js') }}"></script>
+</body>
+</html>

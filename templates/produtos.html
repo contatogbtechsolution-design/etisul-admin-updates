@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Produtos - Etisul</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon-180.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header class="loja-topo">
+    <a href="/" class="logo loja-logo">
+        <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="Etisul">
+    </a>
+
+    <form method="GET" action="/produtos" class="busca-form">
+        <input type="text" name="busca" placeholder="Buscar produto..." value="{{ busca }}">
+        <button type="submit">Buscar</button>
+    </form>
+
+    <a href="/" class="link-topo">Início</a>
+    <a href="/produtos" class="link-topo">Produtos</a>
+    <a href="/carrinho" class="link-topo cart-button" aria-label="Carrinho">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 4h2l2.2 9.2a2 2 0 0 0 2 1.5h7.9a2 2 0 0 0 1.9-1.4L21 7H7"></path>
+            <circle cx="10" cy="19" r="1.6"></circle>
+            <circle cx="18" cy="19" r="1.6"></circle>
+        </svg>
+        <strong>Carrinho</strong>
+        <span>{{ total_carrinho }}</span>
+    </a>
+
+</header>
+
+<section class="loja-container" id="catalogo">
+    {% if request.args.get("carrinho") == "adicionado" %}
+        <div class="alerta-carrinho alerta-carrinho-toast" role="status" aria-live="polite">
+            <strong>Produto adicionado ao carrinho.</strong>
+            <a href="/carrinho">Ver carrinho</a>
+        </div>
+    {% endif %}
+
+    {% if produtos %}
+
+        {% if busca %}
+            <div class="loja-titulo">
+                <span>Busca</span>
+                <h2>Resultados para: "{{ busca }}"</h2>
+            </div>
+        {% else %}
+            <div class="loja-titulo">
+                <div>
+                    <span>Catálogo Etisul</span>
+                    <h2>Produtos para orçamento</h2>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="grade-produtos">
+            {% for produto in produtos %}
+            <article class="produto-card">
+                <a href="/produtos/{{ produto.id }}" class="produto-imagem-link" aria-label="Ver detalhes de {{ produto.nome }}">
+                    {% if produto.imagem %}
+                        <img src="{{ url_for('static', filename='uploads/' + produto.imagem) }}?v={{ produto.imagem }}" alt="{{ produto.nome }}">
+                    {% else %}
+                        <div class="sem-imagem">Sem imagem</div>
+                    {% endif %}
+                </a>
+
+                <div class="produto-card-conteudo">
+                    <span class="produto-categoria">{{ produto.categoria_nome or "Sem categoria" }}</span>
+                    <h3>{{ produto.nome }}</h3>
+                    <p>{{ produto.descricao if produto.descricao else "Etiqueta personalizada para empresas." }}</p>
+                </div>
+                <form method="POST" action="/carrinho/add/{{ produto.id }}" class="produto-compra-form">
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    <input type="number" name="quantidade" min="1" value="1" required>
+                    <button type="submit" class="btn-comprar">Adicionar ao carrinho</button>
+                </form>
+                <div class="produto-acoes-compartilhar">
+                    <a href="/pedido/{{ produto.id }}" class="btn-inicio">Solicitar orçamento direto</a>
+                    <button type="button" class="btn-inicio" data-share-url="{{ request.url_root.rstrip('/') }}/produtos/{{ produto.id }}" data-share-title="{{ produto.nome }}">Compartilhar</button>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+
+    {% else %}
+
+        <div class="produto-nao-encontrado">
+            <h2>Produto não encontrado ou indisponível</h2>
+            <p>Verifique se digitou corretamente ou entre em contato com a Etisul.</p>
+            <a href="/produtos">Ver todos os produtos</a>
+        </div>
+
+    {% endif %}
+
+</section>
+
+<script src="{{ url_for('static', filename='js/scroll-effects.js') }}"></script>
+<script src="{{ url_for('static', filename='js/product-share.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head><meta charset="UTF-8"><title>Carrinho</title><link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body>
+<header class="loja-topo">
+    <a href="/" class="logo loja-logo">
+        <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="Etisul">
+    </a>
+    <a href="/" class="link-topo">Início</a>
+    <a href="/produtos" class="link-topo">Produtos</a>
+</header>
+<main class="carrinho-container">
+    <section class="carrinho-hero">
+        <div>
+            <span>Orçamento online</span>
+            <h1>Carrinho</h1>
+            <p>Revise os produtos selecionados, ajuste as quantidades e escolha entrega e pagamento antes de enviar sua solicitação.</p>
+        </div>
+        <a href="/produtos" class="btn-continuar">Adicionar mais produtos</a>
+    </section>
+    {% if produtos %}
+        <div class="carrinho-grid">
+            <section>
+                {% for produto in produtos %}
+                    <article class="carrinho-item">
+                        {% if produto.imagem %}
+                            <img src="{{ url_for('static', filename='uploads/' + produto.imagem) }}?v={{ produto.imagem }}" alt="{{ produto.nome }}">
+                        {% else %}
+                            <div class="carrinho-sem-img">Sem imagem</div>
+                        {% endif %}
+                        <div class="carrinho-info">
+                            <h3>{{ produto.nome }}</h3>
+                            <p>{{ produto.descricao or "Produto selecionado para orçamento." }}</p>
+                            <form method="POST" action="/carrinho/atualizar/{{ produto.id }}" class="carrinho-quantidade-form">
+                                <label for="quantidade-{{ produto.id }}">Quantidade</label>
+                                <input id="quantidade-{{ produto.id }}" type="number" name="quantidade" min="1" value="{{ produto.quantidade }}" data-auto-submit>
+                            </form>
+                            <a href="/carrinho/remover/{{ produto.id }}" class="btn-remover">Remover</a>
+                        </div>
+                    </article>
+                {% endfor %}
+            </section>
+
+            <aside class="resumo-carrinho">
+                <h2>Resumo</h2>
+                <p class="resumo-carrinho-total">{{ total_carrinho }} item(ns) selecionado(s)</p>
+                <form method="POST" action="/carrinho/opcoes" class="carrinho-opcoes-form">
+                    <div class="carrinho-opcoes">
+                        <h3>Entrega</h3>
+                        <select name="envio_tipo">
+                            <option>Entrega a combinar</option>
+                            <option>Retirada</option>
+                        </select>
+                    </div>
+                    <div class="carrinho-opcoes">
+                        <h3>Pagamento</h3>
+                        <select name="pagamento_tipo">
+                            {% for opcao in opcoes_recebimento %}
+                                <option>{{ opcao.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-finalizar">Continuar para finalizar compra</button>
+                </form>
+            </aside>
+        </div>
+    {% else %}
+        <section class="carrinho-vazio">
+            <h2>Seu carrinho está vazio.</h2>
+            <p>Adicione produtos para montar seu orçamento.</p>
+            <a href="/produtos">Ver produtos</a>
+        </section>
+    {% endif %}
+</main>
+<script>
+document.querySelectorAll("[data-auto-submit]").forEach((input) => {
+    input.addEventListener("change", () => {
+        input.form.requestSubmit();
+    });
+});
+</script>
+</body>
+</html>

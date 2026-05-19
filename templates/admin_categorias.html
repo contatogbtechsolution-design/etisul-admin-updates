@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Categorias - Etisul Admin</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon-180.png') }}">
+    <meta name="theme-color" content="#1f2937">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="admin-app-body">
+<div class="admin-shell">
+    {% include "admin_sidebar.html" %}
+<main class="admin-page">
+<div class="container">
+    <div class="admin-app-brand">
+        <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="Etisul" class="admin-installed-logo">
+    </div>
+
+    <h1>Categorias</h1>
+    <a href="/admin" class="btn-inicio">Voltar ao início</a>
+
+    <h2>Cadastrar Categoria</h2>
+    <form method="POST" action="/admin/categorias/add" class="form-produto">
+        <input type="text" name="nome" placeholder="Nome da categoria" required>
+        <input type="text" name="tipo" placeholder="Tipo ou grupo">
+        <textarea name="descricao" placeholder="Descrição opcional" rows="3"></textarea>
+        <button type="submit">Adicionar</button>
+    </form>
+
+    <h2>Lista de Categorias</h2>
+
+    <form method="GET" class="busca-form admin-busca">
+        <input type="text" name="busca" placeholder="Buscar por categoria, descrição ou tipo" value="{{ busca or '' }}" data-live-search="tr[data-search]">
+        <button type="submit">Buscar</button>
+    </form>
+
+    {% if categorias %}
+        <form method="POST" action="/admin/categorias/delete-all" class="form-excluir-todos" onsubmit="return confirm('Tem certeza que deseja excluir todas as categorias? Os produtos vinculados ficarão sem categoria.');">
+            <button type="submit" class="btn-excluir">Excluir todas as categorias</button>
+        </form>
+    {% endif %}
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Descrição</th>
+            <th>Produtos</th>
+            <th>Ações</th>
+        </tr>
+        {% for categoria in categorias %}
+        <tr data-search="{{ categoria.id }} {{ categoria.nome }} {{ categoria.tipo or '' }} {{ categoria.descricao or '' }} {{ categoria.total_produtos }}">
+            <td>{{ categoria.id }}</td>
+            <td>{{ categoria.nome }}</td>
+            <td>{{ categoria.tipo or "Sem tipo" }}</td>
+            <td>
+                <textarea class="descricao-expandivel" readonly ondblclick="this.classList.toggle('expandida')">{{ categoria.descricao or '' }}</textarea>
+            </td>
+            <td>{{ categoria.total_produtos }}</td>
+            <td class="produto-acoes">
+                <a href="/admin/categorias/edit/{{ categoria.id }}" class="btn-editar">Editar</a>
+                <form method="POST" action="/admin/categorias/delete/{{ categoria.id }}" class="form-categoria-delete" onsubmit="return confirm('Excluir esta categoria? Os produtos vinculados ficarão sem categoria.');">
+                    <button type="submit" class="btn-excluir">Excluir</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="6">Nenhuma categoria encontrada.</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+</main>
+</section>
+</div>
+
+<script src="{{ url_for('static', filename='js/scroll-effects.js') }}"></script>
+<script src="{{ url_for('static', filename='js/admin-search.js') }}"></script>
+</body>
+</html>

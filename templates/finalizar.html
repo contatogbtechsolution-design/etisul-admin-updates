@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Finalizar compra - Etisul</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="loja-topo">
+    <a href="/" class="logo loja-logo">
+        <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="Etisul">
+    </a>
+    <a href="/" class="link-topo">Início</a>
+    <a href="/produtos" class="link-topo">Produtos</a>
+    <a href="/carrinho" class="link-topo">Carrinho</a>
+</header>
+
+<main class="checkout-page">
+    <section class="checkout-header">
+        <div>
+            <span>Última etapa</span>
+            <h1>Finalizar compra</h1>
+            <p>Revise os dados antes de enviar sua solicitação. A equipe da Etisul vai transformar estes itens em orçamento para confirmação.</p>
+        </div>
+    </section>
+
+    {% if produtos %}
+        <section class="checkout-grid">
+            <div class="checkout-coluna">
+                <article class="checkout-card">
+                    <h2>Produtos selecionados</h2>
+                    {% for produto in produtos %}
+                        <div class="pedido-produto">
+                            {% if produto.imagem %}
+                                <img src="{{ url_for('static', filename='uploads/' + produto.imagem) }}?v={{ produto.imagem }}" alt="{{ produto.nome }}">
+                            {% else %}
+                                <div class="carrinho-sem-img">Sem imagem</div>
+                            {% endif %}
+                            <div>
+                                <h3>{{ produto.nome }}</h3>
+                                <p>{{ produto.descricao or "Produto selecionado para orçamento." }}</p>
+                                <strong>Quantidade: {{ produto.quantidade }}</strong>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </article>
+
+                <article class="checkout-card">
+                    <h2>Dados do cliente</h2>
+                    <div class="checkout-info-grid">
+                        <p><strong>Nome</strong>{{ cliente.nome }}</p>
+                        <p><strong>E-mail</strong>{{ cliente.email }}</p>
+                        <p><strong>Telefone</strong>{{ cliente.telefone or "Não informado" }}</p>
+                        <p><strong>Cidade/Estado</strong>{{ cliente.cidade or "Não informado" }}/{{ cliente.estado or "Não informado" }}</p>
+                    </div>
+                </article>
+            </div>
+
+            <aside class="resumo-pedido">
+                <h2>Resumo do envio</h2>
+                <p><strong>Entrega</strong>{{ envio_tipo or "Entrega a combinar" }}</p>
+                <p><strong>Pagamento</strong>{{ pagamento_tipo or "Pagamento a combinar" }}</p>
+                <p><strong>Total de itens</strong>{{ total_carrinho }}</p>
+
+                <form method="POST" class="checkout-final-form">
+                    <label for="observacoes">Observações para o orçamento</label>
+                    <textarea id="observacoes" name="observacoes" placeholder="Informe medidas, material, prazo desejado ou qualquer detalhe importante."></textarea>
+                    <button type="submit" class="btn-finalizar">Enviar compra para orçamento</button>
+                </form>
+                <a href="/carrinho" class="btn-continuar">Voltar ao carrinho</a>
+            </aside>
+        </section>
+    {% else %}
+        <section class="checkout-card">
+            <h2>Seu carrinho está vazio</h2>
+            <p>Adicione produtos antes de finalizar sua solicitação.</p>
+            <a href="/produtos" class="btn-inicio">Ver produtos</a>
+        </section>
+    {% endif %}
+</main>
+</body>
+</html>

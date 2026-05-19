@@ -1,0 +1,47 @@
+name: Publicar app desktop
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: release-desktop
+  cancel-in-progress: true
+
+jobs:
+  build-and-publish:
+    runs-on: windows-latest
+
+    defaults:
+      run:
+        working-directory: desktop/etisul-admin
+
+    steps:
+      - name: Baixar código
+        uses: actions/checkout@v4
+
+      - name: Preparar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: desktop/etisul-admin/package-lock.json
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Gerar versão automática
+        shell: pwsh
+        run: |
+          $package = Get-Content package.json -Raw | ConvertFrom-Json
+          $parts = $package.version.Split('.')
+          $newVersion = "$($parts[0]).$($parts[1]).${env:GITHUB_RUN_NUMBER}"
+          npm version --no-git-tag-version $newVersion
+          "RELEASE_VERSION=$newVersion" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Compilar e publicar release
+        env:
+          GH_TOKEN: ${{ secrets.DESKTOP_GH_TOKEN }}
+        run: npx electron-builder --win nsis --x64 --publish always
+

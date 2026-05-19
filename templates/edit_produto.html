@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Editar Produto</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon-180.png') }}">
+    <meta name="theme-color" content="#1f2937">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="admin-app-body">
+<div class="admin-shell">
+    {% include "admin_sidebar.html" %}
+<main class="admin-page">
+<div class="container">
+    <div class="admin-app-brand">
+        <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="Etisul" class="admin-installed-logo">
+    </div>
+
+    <h1>Editar Produto</h1>
+
+    <form method="POST" enctype="multipart/form-data" class="form-produto">
+        <label>
+            Nome
+            <input type="text" name="nome" value="{{ produto.nome }}" required>
+        </label>
+
+        <label>
+            Categoria
+            <select name="categoria_id">
+                <option value="">Sem categoria</option>
+                {% for categoria in categorias %}
+                    <option value="{{ categoria.id }}" {% if produto.categoria_id == categoria.id %}selected{% endif %}>
+                        {{ categoria.nome }}
+                    </option>
+                {% endfor %}
+            </select>
+        </label>
+
+        <label>
+            Descrição
+            <textarea name="descricao" rows="4" required>{{ produto.descricao }}</textarea>
+        </label>
+
+        {% if produto.imagem %}
+            <div>
+                <p>Imagem atual</p>
+                <img src="{{ url_for('static', filename='uploads/' + produto.imagem) }}?v={{ produto.imagem }}" alt="{{ produto.nome }}" class="edit-produto-img">
+            </div>
+            <form method="POST" action="/admin/produtos/remove-image/{{ produto.id }}">
+                <button type="submit" class="btn-excluir">Excluir foto</button>
+            </form>
+        {% endif %}
+
+        <label>
+            Trocar imagem
+            <input type="file" name="imagem" accept="image/png,image/jpeg,image/gif,image/webp">
+        </label>
+
+        <button type="submit">Salvar</button>
+    </form>
+
+    <a href="/admin/produtos" class="btn-continuar">Voltar</a>
+    <a href="/admin" class="btn-inicio">Voltar ao início</a>
+</div>
+</main>
+</section>
+</div>
+
+<script src="{{ url_for('static', filename='js/scroll-effects.js') }}"></script>
+</body>
+</html>
+

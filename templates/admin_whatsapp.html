@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WhatsApp orçamentos - Etisul</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="admin-app-body">
+<div class="admin-shell">
+    {% include "admin_sidebar.html" %}
+<main class="admin-page">
+<div class="container">
+    <div class="admin-app-brand">
+        <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="Etisul" class="admin-installed-logo">
+    </div>
+
+    <section class="admin-page-header">
+        <div>
+            <span>App administrativo</span>
+            <h1>WhatsApp orçamentos</h1>
+            <p>Acompanhe solicitações registradas no site e continue o atendimento pelo WhatsApp.</p>
+        </div>
+    </section>
+
+    <form method="GET" class="busca-form admin-busca">
+        <input type="text" name="busca" placeholder="Buscar por cliente, telefone, produto ou número" value="{{ busca }}">
+        <button type="submit">Buscar</button>
+    </form>
+
+    {% if orcamentos %}
+        <section class="admin-orcamentos-lista">
+            {% for orcamento in orcamentos %}
+                {% set mensagem = 'Olá, recebemos seu orçamento solicitado #' ~ orcamento.id ~ ' na Etisul Etiquetas para: ' ~ (orcamento.produtos or 'produto não informado') ~ '. Podemos continuar o atendimento por aqui?' %}
+                <article class="admin-orcamento-card">
+                    <div>
+                        <span>Orçamento #{{ orcamento.id }}</span>
+                        <h2>{{ orcamento.nome_cliente }}</h2>
+                        <p>{{ orcamento.produtos or "Produto não informado" }}</p>
+                    </div>
+
+                    <div class="admin-orcamento-meta">
+                        <strong>Qtd. {{ orcamento.quantidade or 0 }}</strong>
+                        <strong>R$ {{ orcamento.valor_total or "0.00" }}</strong>
+                    </div>
+
+                    <div class="admin-orcamento-contato">
+                        <p>{{ orcamento.telefone or "Telefone não informado" }}</p>
+                        <p>{{ orcamento.cliente_email or "E-mail não informado" }}</p>
+                    </div>
+
+                    <div class="admin-orcamento-acoes">
+                        {% if orcamento.telefone %}
+                            <a href="https://web.whatsapp.com/send?phone=55{{ orcamento.telefone|replace(' ', '')|replace('-', '')|replace('(', '')|replace(')', '') }}&text={{ mensagem|urlencode }}" class="btn-whatsapp" target="_blank" rel="noopener">Chamar no WhatsApp</a>
+                        {% endif %}
+                    </div>
+                </article>
+            {% endfor %}
+        </section>
+    {% else %}
+        <section class="admin-panel">
+            <h2>Nenhuma solicitação encontrada</h2>
+            <p>Quando um cliente solicitar orçamento pelo site, o registro aparecerá aqui.</p>
+        </section>
+    {% endif %}
+
+    <a href="/admin" class="btn-inicio">Voltar ao início</a>
+</div>
+</main>
+</section>
+</div>
+</body>
+</html>

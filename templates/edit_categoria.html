@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Editar Categoria</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="admin-app-body">
+<div class="admin-shell">
+    {% include "admin_sidebar.html" %}
+<main class="admin-page">
+<div class="container">
+    <h1>Editar Categoria</h1>
+    <form method="POST" class="form-produto">
+        <label>Nome<input type="text" name="nome" value="{{ categoria.nome }}" required></label>
+        <label>Tipo<input type="text" name="tipo" value="{{ categoria.tipo or '' }}"></label>
+        <label>Descrição<textarea name="descricao" rows="4">{{ categoria.descricao or '' }}</textarea></label>
+        <button type="submit">Salvar alterações</button>
+    </form>
+    <a href="/admin/categorias" class="btn-inicio">Voltar</a>
+</div>
+</main>
+</section>
+</div>
+</body>
+</html>

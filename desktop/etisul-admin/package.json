@@ -1,0 +1,70 @@
+{
+  "name": "etisul-admin-desktop",
+  "version": "1.1.8",
+  "description": "Aplicativo desktop administrativo da Etisul Etiquetas",
+  "main": "main.js",
+  "author": "Etisul Etiquetas",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis --x64"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "br.com.etisul.admin",
+    "productName": "Etisul Admin",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "contatogbtechsolution-design",
+        "repo": "etisul-admin-updates"
+      }
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "artifactName": "Etisul-Admin-Setup-${version}.${ext}",
+    "files": [
+      "main.js",
+      "package.json",
+      "assets/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "../../",
+        "to": "etisul",
+        "filter": [
+          "**/*",
+          "!desktop/etisul-admin/node_modules/**",
+          "!desktop/etisul-admin/dist/**",
+          "!desktop/etisul-admin/dist-novo/**",
+          "!desktop/etisul-admin/dist-auto-update/**",
+          "!desktop/etisul-admin/dist-github/**",
+          "!desktop/etisul-admin/dist-release/**",
+          "!desktop/etisul-admin/dist-public/**",
+          "!**/__pycache__/**",
+          "!**/*.pyc"
+        ]
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/etisul-admin.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Etisul Admin"
+    }
+  },
+  "dependencies": {
+    "app-builder-bin": "^5.0.0-alpha.10",
+    "electron-updater": "^6.8.3"
+  }
+}

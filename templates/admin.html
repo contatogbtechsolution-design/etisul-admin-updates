@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Início - Etisul Admin</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon-180.png') }}">
+    <meta name="theme-color" content="#1f2937">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="admin-app-body">
+<div class="admin-shell">
+    {% include "admin_sidebar.html" %}
+
+    <main class="admin-page">
+        <div class="admin-app-brand">
+        <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="Etisul" class="admin-installed-logo">
+        </div>
+
+        <section class="admin-page-header">
+            <div>
+                <span>Início</span>
+                <h1>Painel administrativo</h1>
+                <p>Aplicativo interno para gestão de produtos, pedidos, clientes e operação da Etisul.</p>
+            </div>
+        </section>
+
+        <section class="admin-dashboard-grid">
+            <article><span>Produtos</span><strong>{{ total_produtos }}</strong></article>
+            <article><span>Solicitações</span><strong>{{ total_pedidos }}</strong></article>
+            <article><span>Clientes</span><strong>{{ total_clientes }}</strong></article>
+            <article><span>Funcionários</span><strong>{{ total_funcionarios }}</strong></article>
+        </section>
+
+        <section class="admin-quick-actions">
+            <a href="/admin/produtos" class="btn-inicio">Produtos</a>
+            <a href="/admin/pedidos" class="btn-inicio">Pedidos</a>
+            <a href="/admin/clientes" class="btn-inicio">Clientes cadastrados</a>
+            {% if session.get("cargo") == "admin" %}
+                <a href="/admin/relatorios" class="btn-inicio">Relatórios</a>
+            {% endif %}
+        </section>
+
+        <section class="admin-panel">
+            <h2>Solicitações recentes</h2>
+            <table>
+                <tr>
+                    <th>Pedido</th>
+                    <th>Cliente</th>
+                    <th>Total</th>
+                    <th>Data</th>
+                </tr>
+                {% for pedido in pedidos_recentes %}
+                <tr>
+                    <td>#{{ pedido.id }}</td>
+                    <td>{{ pedido.nome_cliente }}</td>
+                    <td>R$ {{ pedido.valor_total }}</td>
+                    <td>{{ pedido.data }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </section>
+    </main>
+</section>
+</div>
+
+<script src="{{ url_for('static', filename='js/scroll-effects.js') }}"></script>
+</body>
+</html>

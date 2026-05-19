@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Usuários - Etisul</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon-180.png') }}">
+    <meta name="theme-color" content="#1f2937">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="admin-app-body">
+<div class="admin-shell">
+    {% include "admin_sidebar.html" %}
+<main class="admin-page">
+<div class="container">
+    <div class="admin-app-brand">
+        <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="Etisul" class="admin-installed-logo">
+    </div>
+
+    <section class="admin-page-header"><div><span>Funcionários</span><h1>Gerenciar usuários</h1><p>Cadastro, status e permissões da equipe interna.</p></div></section>
+
+    {% if mensagem %}
+        <p class="mensagem-sucesso">{{ mensagem }}</p>
+    {% endif %}
+
+    {% if erro %}
+        <p class="mensagem-erro">{{ erro }}</p>
+    {% endif %}
+
+    <p>Selecione Colaborador administrador para liberar todas as funcionalidades do menu administrativo.</p>
+
+    <form method="GET" class="busca-form admin-busca">
+        <input type="text" name="busca" placeholder="Buscar por ID, nome, e-mail, cargo, telefone ou status" value="{{ busca or '' }}" data-live-search="tr[data-search]">
+        <button type="submit">Buscar</button>
+    </form>
+
+    <form method="POST" class="form-produto">
+        <input type="text" name="nome" placeholder="Nome completo" required>
+        <input type="text" name="usuario" placeholder="Usuário" required>
+        <div class="campo-senha">
+            <input type="password" name="senha" id="senha-colaborador" placeholder="Senha" readonly required>
+            <button type="button" class="btn-olho" data-password-toggle="senha-colaborador" aria-label="Mostrar senha">&#128065;</button>
+        </div>
+        <button type="button" id="gerar-senha-colaborador">Gerar senha aleatória</button>
+
+        <select name="cargo" required>
+            {% for cargo in cargos %}
+                <option value="{{ cargo }}">
+                    {% if cargo == "admin" %}Colaborador administrador{% elif cargo == "chefe" %}Chefe{% else %}Funcionário{% endif %}
+                </option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Cadastrar colaborador</button>
+    </form>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Usuário</th>
+            <th>E-mail</th>
+            <th>Telefone</th>
+            <th>Cargo</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+
+        {% for u in usuarios %}
+        <tr data-search="{{ u.id }} {{ u.nome }} {{ u.usuario }} {{ u.email or '' }} {{ u.telefone or '' }} {{ u.cargo }} {{ u.status or 'ativo' }} {% if u.usuario == 'admin' %}principal{% endif %}">
+            <td>{{ u.id }}</td>
+            <td>{{ u.nome }}</td>
+            <td>{{ u.usuario }}</td>
+            <td>{{ u.email or "Não informado" }}</td>
+            <td>{{ u.telefone or "Não informado" }}</td>
+            <td>{{ u.cargo }}</td>
+            <td class="{% if (u.status or 'ativo') == 'ativo' %}status-fechado{% else %}status-cancelado{% endif %}">{% if u.usuario == "admin" %}Ativo principal{% else %}{{ u.status or "ativo" }}{% endif %}</td>
+            <td>
+                {% if u.usuario != "admin" %}
+                    <a href="/admin/usuarios/edit/{{ u.id }}" class="btn-editar">Editar</a>
+                    <a href="/admin/usuarios/delete/{{ u.id }}" class="btn-excluir">Remover</a>
+                {% else %}
+                    Admin principal
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="/admin" class="btn-inicio">Voltar ao início</a>
+</div>
+</main>
+</section>
+</div>
+
+<script src="{{ url_for('static', filename='js/scroll-effects.js') }}"></script>
+<script src="{{ url_for('static', filename='js/admin-search.js') }}"></script>
+<script src="{{ url_for('static', filename='js/senha-toggle.js') }}"></script>
+<script>
+document.getElementById("gerar-senha-colaborador")?.addEventListener("click", function () {
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
+    let senha = "";
+    for (let i = 0; i < 12; i += 1) senha += chars[Math.floor(Math.random() * chars.length)];
+    const campoSenha = document.getElementById("senha-colaborador");
+    const botaoOlho = document.querySelector('[data-password-toggle="senha-colaborador"]');
+    campoSenha.value = senha;
+    campoSenha.type = "text";
+    if (botaoOlho) {
+        botaoOlho.setAttribute("aria-label", "Ocultar senha");
+        botaoOlho.classList.add("senha-visivel");
+    }
+});
+</script>
+</body>
+</html>
+

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Configurações - Etisul</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon-180.png') }}">
+    <meta name="theme-color" content="#1f2937">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="admin-app-body">
+<div class="admin-shell">
+    {% include "admin_sidebar.html" %}
+<main class="admin-page">
+<div class="container">
+    <div class="admin-app-brand">
+        <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="Etisul" class="admin-installed-logo">
+    </div>
+
+    <h1>Configurações da conta</h1>
+
+    {% if mensagem %}
+        <p class="mensagem-sucesso">{{ mensagem }}</p>
+    {% endif %}
+
+    {% if erro %}
+        <p class="mensagem-erro">{{ erro }}</p>
+    {% endif %}
+
+    <div class="perfil-resumo">
+        {% if usuario and usuario.foto_perfil %}
+            <img src="{{ url_for('static', filename='profiles/' + usuario.foto_perfil) }}" alt="{{ usuario.nome }}">
+        {% else %}
+            <div class="perfil-sem-foto">{{ usuario.nome[0] if usuario and usuario.nome else "U" }}</div>
+        {% endif %}
+
+        <div>
+            <h2>{{ usuario.nome }}</h2>
+            <p>{{ usuario.usuario }} | {{ usuario.cargo }}</p>
+        </div>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="form-produto">
+        <label>
+            Foto de perfil
+            <input type="file" name="foto_perfil" accept="image/png,image/jpeg,image/gif,image/webp">
+        </label>
+
+        <label>
+            Senha atual
+            <input type="password" name="senha_atual" placeholder="Informe para trocar a senha">
+        </label>
+
+        <label>
+            Nova senha
+            <input type="password" name="nova_senha" placeholder="Nova senha">
+        </label>
+
+        <label>
+            Confirmar nova senha
+            <input type="password" name="confirmar_senha" placeholder="Repita a nova senha">
+        </label>
+
+        <button type="submit">Salvar configurações</button>
+    </form>
+    {% if usuario and usuario.foto_perfil %}
+        <form method="POST">
+            <input type="hidden" name="remover_foto" value="1">
+            <button type="submit" class="btn-excluir">Excluir foto</button>
+        </form>
+    {% endif %}
+
+    <a href="/logout" class="btn-excluir">Sair da conta</a>
+    <a href="/admin" class="btn-inicio">Voltar ao início</a>
+</div>
+</main>
+</section>
+</div>
+
+<script src="{{ url_for('static', filename='js/scroll-effects.js') }}"></script>
+</body>
+</html>
+

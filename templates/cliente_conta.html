@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Minha Conta - Etisul</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon-180.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">
+        <img src="{{ url_for('static', filename='img/logo-grande.png') }}" alt="Etisul">
+    </div>
+
+    <nav class="menu-links cliente-menu">
+        <a href="/">Início</a>
+        <a href="/cliente/login">Minha Conta</a>
+        <a href="/cliente/pedidos">Meus Pedidos</a>
+        <a href="/cliente/logout">Sair</a>
+    </nav>
+</header>
+
+<main class="cliente-dashboard">
+    <section class="cliente-hero">
+        <div>
+            <span>Login / minha conta</span>
+            <h1>Olá, {{ cliente.nome }}</h1>
+            <p>Veja suas informações, solicitações e endereços cadastrados.</p>
+        </div>
+        <div class="cliente-hero-actions">
+            <a href="/" class="btn-continuar">Voltar para página inicial</a>
+            <a href="/cliente/editar" class="btn-inicio">Editar informações</a>
+            <a href="/cliente/logout" class="btn-excluir">Sair da conta</a>
+        </div>
+    </section>
+
+    <section class="cliente-grid-conta">
+        <article class="cliente-painel">
+            <h2>Dados do cliente</h2>
+            <p><strong>Nome:</strong> {{ cliente.nome }}</p>
+            <p><strong>E-mail:</strong> {{ cliente.email }}</p>
+            <p><strong>Telefone:</strong> {{ cliente.telefone or "Não informado" }}</p>
+            <p><strong>CPF/CNPJ:</strong> {{ cliente.cpf_cnpj or "Não informado" }}</p>
+            <p><strong>Cidade/Estado:</strong> {{ cliente.cidade or "Não informado" }}/{{ cliente.estado or "Não informado" }}</p>
+            <p><strong>CEP:</strong> {{ cliente.cep or "Não informado" }}</p>
+            <p><strong>Endereço base:</strong> {{ cliente.endereco or "Não informado" }}</p>
+        </article>
+
+        <article class="cliente-painel">
+            <h2>Endereços cadastrados</h2>
+            {% if enderecos %}
+                {% for endereco in enderecos %}
+                    <div class="conta-lista-item">
+                        <strong>{{ endereco.nome }}</strong>
+                        <p>{{ endereco.rua }}, {{ endereco.numero }} - {{ endereco.cidade }}/{{ endereco.estado }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Nenhum endereço cadastrado ainda.</p>
+            {% endif %}
+        </article>
+
+        <article class="cliente-painel">
+            <h2>Histórico recente</h2>
+            {% if pedidos %}
+                {% for pedido in pedidos %}
+                    <div class="conta-lista-item">
+                        <strong>Pedido #{{ pedido.id }}</strong>
+                        <p>{{ pedido.total_itens }} item(ns) - R$ {{ pedido.valor_total }}</p>
+                    </div>
+                {% endfor %}
+                <a href="/cliente/pedidos" class="btn-continuar">Ver todos os pedidos</a>
+            {% else %}
+                <p>Você ainda não possui pedidos registrados.</p>
+            {% endif %}
+        </article>
+    </section>
+</main>
+
+<script src="{{ url_for('static', filename='js/scroll-effects.js') }}"></script>
+</body>
+</html>

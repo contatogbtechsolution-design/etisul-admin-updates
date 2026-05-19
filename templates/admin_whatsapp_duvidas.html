@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>WhatsApp dúvidas - Etisul</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="admin-app-body">
+<div class="admin-shell">
+    {% include "admin_sidebar.html" %}
+<main class="admin-page">
+<div class="container">
+    <section class="admin-page-header"><div><span>WhatsApp</span><h1>WhatsApp dúvidas</h1><p>Dúvidas enviadas pelo site para acompanhamento da equipe.</p></div></section>
+    <form method="GET" class="busca-form admin-busca">
+        <input type="text" name="busca" placeholder="Buscar por cliente, e-mail, telefone ou mensagem" value="{{ busca }}">
+        <button type="submit">Buscar</button>
+    </form>
+    <section class="admin-panel">
+        <table>
+            <tr><th>Número</th><th>Cliente</th><th>E-mail</th><th>Telefone</th><th>Dúvida</th><th>Data</th><th>Ações</th></tr>
+            {% for duvida in duvidas %}
+                <tr>
+                    <td>#{{ duvida.id }}</td>
+                    <td>{{ duvida.nome }}</td>
+                    <td>{{ duvida.email or "Não informado" }}</td>
+                    <td>{{ duvida.telefone or "Não informado" }}</td>
+                    <td>{{ duvida.mensagem }}</td>
+                    <td>{{ duvida.criado_em }}</td>
+                    <td>
+                        {% set mensagem = 'Olá, recebemos sua dúvida #' ~ duvida.id ~ ' na Etisul Etiquetas: ' ~ duvida.mensagem ~ '. Podemos continuar o atendimento por aqui?' %}
+                        {% if duvida.telefone %}
+                            <a href="https://web.whatsapp.com/send?phone=55{{ duvida.telefone|replace(' ', '')|replace('-', '')|replace('(', '')|replace(')', '') }}&text={{ mensagem|urlencode }}" class="btn-whatsapp" target="_blank" rel="noopener">Chamar no WhatsApp</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </section>
+</div>
+</main>
+</section>
+</div>
+</body>
+</html>
